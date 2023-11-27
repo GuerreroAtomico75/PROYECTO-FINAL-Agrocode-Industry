@@ -42,7 +42,13 @@ Los puntos que tuvimos en cuenta para resolver el problema antes de editar códi
   * Noob
   * Decente
   * God
-* 
+* La diferencia de dificultad se observará en la cantidad de palabras que hay que encontrar.
+* Al momento de escoger la dificultad se generará la matriz, esta matriz tendrá 15 arreglos (que son la cantidad de filas) de un tamaño de 15 elementos. Cada letra puede corresponder a una palabra o a una una letra al azar.
+* Se necesitará generar letras al azar, que no intercedan con letras de las palabras que estarán en la sopa de letras.
+* Será necesario que al momento que el usuario encuentre una palabra pueda seleccionarla, teniendo en cuenta las filas y las columnas de la sopa de letras.
+* Si cada vez que se escoge una letra a través de las coordenadas, es una letra que conforma una de las palbras que se va a encontrar; entonces se le pedirá al usuario que ingrese la palabra que encontró. Si los dos pasos anteriores son correctos entonces se habrá encontrado una palabra; sino entonces se avisará que no es una palabra que es parte de las que hay que encontrar y se vuelve a tener la oportunidad de seguir escogiendo palabras.
+
+#### Datalles a tener en cuenta al momento crear 
 
 **Código**
 ```python
