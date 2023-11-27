@@ -483,3 +483,53 @@ if __name__ == "__main__":
 ---
 
 ### Diagrama General del uso de la sopa de letras.
+
+```mermaid
+graph TD
+
+subgraph Inicio
+    inicio(Inicio)
+    inicio --> Nivel[Elegir Nivel]
+end
+
+subgraph "Generar Sopa"
+    Nivel --> Seleccion{Nivel seleccionado}
+    Seleccion -- noob --> noob[Generar palabras para nivel noob]
+    Seleccion -- decente --> decente[Generar palabras para nivel decente]
+    Seleccion -- good --> good[Generar palabras para nivel good]
+    noob --> Generar[Generar Sopa de Letras]
+    decente --> Generar
+    good --> Generar
+    Generar --> Encontrar[Encontrar palabras]
+end
+
+subgraph "Jugar Sopa"
+    Encontrar --> Terminar{¿Todas las palabras encontradas?}
+    Terminar -- No --> Mostrar[Mostrar Sopa]
+    Mostrar --> coordenadas[Ingresar coordenadas y palabra]
+    coordenadas --> encontrada{¿Palabra encontrada?}
+    encontrada -- No --> notcoincide[La palabra ingresada no coincide]
+    notcoincide ---> Terminar
+    encontrada -- No --> busca[Palabra ya encontrada]
+    busca --> Terminar
+    encontrada -- si --> guardar[Palabra guardada]
+    guardar ---> Terminar
+    Terminar -- Si --> N[Mostrar tiempo total]
+end
+
+subgraph Fin
+    N --> O(Fin)
+end
+```
+
+El diagrama es una descripción del recorrido que hace realmente el programa a nivel general. Mirando el código nos damos cuenta que el uso de varias funciones están adentro de otras funciones y eso se comprueba en el diagrama a nivel general que se muestra anteriormente.
+
+---
+
+### Conclusiones
+
+Gracias al trabajo de este proyecto se pudo abordar el problema antes de crear su código, se pudo hacer el código que resuelve el problema a través de diferentes herramientas vistas en el curso. De igual manera se pudo trabajar el análisis del código teniendo en cuenta las mismas herramientas con las que se trabajó.
+
+---
+
+## Muchas Gracias por leer este respositorio.
