@@ -64,24 +64,31 @@ Los puntos que tuvimos en cuenta para resolver el problema antes de editar códi
 En este momento se podrá ver el código que generará el juego de la sopa de letras, pero más adelante se analizará cada parte del código.
 
 ```python
+#Importamos librerías necesarias para la creación del código.
 import random
 import string
 import time
 
+#Creamos una función que recibe la respuesta del usuario para elegir la dificultad en la que quiere jugar.
 def generar_sopa(dificultad):
-    if dificultad == "noob":
+    if dificultad == "noob": #Dificultad en la que juega el profe Felipe
         palabras = ["algoritmo", "instrucciones", "pseudocodigo", "variables", "entero", "lenguaje", "flotante",
                     "constante", "booleano", "strings", "operadores", "listas"]
-    elif dificultad == "decente":
+    elif dificultad == "decente": #Dificultad en la que juega la mayoría de ingenieros
         palabras = ["condicional", "input", "indentacion", "if", "elif", "else", "funcion", "libreria", "alcance",
                     "import", "while", "break", "continue", "for", "rango"]
-    elif dificultad == "good":
+    elif dificultad == "good": #Dificultad en la que juegan los ingenieros industriales e ingenieros agricolas
         palabras = ["arreglo", "mutabilidad", "indice", "concatenar", "pertenencia", "slicing", "len", "append",
                     "pop", "insert", "remove", "count", "sort", "matriz", "split", "replace", "format", "tupla",
                     "diccionario", "find", "identidad"]
 
+    # Se crea la variable sopa, en la cual aparece el método .choice de la librería random, que toma como argumentos
+    # a las letras minúsculas del código ASCII a través del método .ascii_lowercase de la librería string
+    # Esto a través de cada elemento de cada arreglo
     sopa = [[random.choice(string.ascii_lowercase) for _ in range(15)] for _ in range(15)]
 
+    # Se crea ciclo for para que en la matriz se genere la palabra y las letras al azar. Esto a través de la función
+    # colocar_palabra, ya se ve más adelante.
     for palabra in palabras:
         colocar_palabra(sopa, palabra)
 
@@ -89,33 +96,55 @@ def generar_sopa(dificultad):
     for palabra in palabras:
         for fila in range(15):
             for columna in range(15):
-                if verificar_palabra(sopa, palabra, fila, columna):
+                if verificar_palabra(sopa, palabra, fila, columna): # Se utiliza la función verificar_palabra
                     print(f'Palabra "{palabra}" empieza en la fila {fila}, columna {columna}')
 
+    # Nos retorna la variable sopa
     return sopa
 
+# Creamos la función colocar_palabra que toma los datos de la variable sopa y la variable palabra
 def colocar_palabra(sopa, palabra):
+    #Creamos la variable dirección para definir la dirección en la que irá la palabra. Para ello a través del método random.choice
+    # hacemos que se escoja entre la dirección horizontal y vertical
     direccion = random.choice(["horizontal", "vertical"])
-    if direccion == "horizontal":
+    if direccion == "horizontal": #Palabra horizontalmente
+        # Para ello se pide que escoja aleatoriamente la posición de la fila en la cual iniciará la palabra, a través del índice de
+        # los elementos
         fila = random.randint(0, 14)
+        # Al momento de escoger en que columna iniciará la palabra, se tiene en cuenta que hay un límite para escoger la palabra
+        # para ello se le resta al índice la cantidad de letras que tiene la palabra, ya que si no se hace esto se pasará de la cantidad
+        # de elementos de cada arreglo y no se podrá trabajar con la sopa de letras
         columna = random.randint(0, 15 - len(palabra))
         for i in range(len(palabra)):
+            #Hacemos indexación y el resultado de la indexación va a ser un elemento de la variable palabra que pasó por el ciclo palabras
+            # y quedará en la posición[i]
             sopa[fila][columna + i] = palabra[i]
-    else:
+    else: # Palabra verticalmente
+        #Se hace lo mismo que en el anterior caso, pero lo que se le hace a las filas pasa a las columnas, y lo que se le hace a las
+        #columnas ahora se le hace a las filas. Esto para poner el límite entre el número de filas que hay y que las palabras estén
+        #ubicadas completamente en la sopa de letras.
         fila = random.randint(0, 14 - len(palabra))
         columna = random.randint(0, 14)
         for i in range(len(palabra)):
             sopa[fila + i][columna] = palabra[i]
 
+#Tenemos la función mostrar_sopa
 def mostrar_sopa(sopa):
     for fila in sopa:
+        #Usamos el método .join, que une todos los elementos de una matriz y los devuelve en una cadena, pero para este caso será para
+        #las filas
         print(" ".join(fila))
     print()
 
+#Contamos con la función jugar_sopa
 def jugar_sopa(sopa):
+    #las palabras ha encontrar serán almacenadas en un elemento set(), el cual no puede tener elementos duplicados
     palabras_encontradas = set()
+    #Para calcular el tiempo que se demora el jugador completar la sopa de letras.
     inicio_tiempo = time.time()
 
+    #Creamos un ciclo en el cual pediremos que pida una coordenada de la fila y columna donde está la palabra
+    #encontrada, de igual manera se pide que ingrese la palabra encontrada, esta con la variable palabra
     while True:
         mostrar_sopa(sopa)
         x = int(input("Ingrese la fila (0-14): "))
@@ -123,31 +152,45 @@ def jugar_sopa(sopa):
 
         palabra = input("Ingrese la palabra encontrada: ")
 
+        #Si palabra encontrada esta en la variable de palabras_encontradas entonces es porque ya se había
+        #encontrado
         if palabra in palabras_encontradas:
             print("¡Ya encontraste esa palabra!")
+            # con continue podemos continuar con el ciclo
             continue
-
+        
+        #Usamos la función verificar_palabra
         if verificar_palabra(sopa, palabra, x, y):
+            #Si con la función se verifica que se encontró la palabra entonces da el siguiente mensaje
             print("¡Correcto! Palabra encontrada.")
+            #A la palabra se le añade a la variable palabras_encontradas, para que el primer caso tenga sentido.
             palabras_encontradas.add(palabra)
-        else:
+        else: # Si no es correcta la palabra encontrada entonces da el siguiente mensaje
             print("Incorrecto. Inténtalo de nuevo.")
 
+        #Este último caso para saber si ya se encontraron todas las palabras de la sopa de letras
+        # Si la cantidad de palabras en la variable es igual a la cantidad de palabras encontradas entonces se rompe el ciclo
         if len(palabras_encontradas) == len(set(palabra for palabra in palabra)):
             break
-
+    
+    #El tiempo total lo evaluamos
     tiempo_total = time.time() - inicio_tiempo
     print(f"Felicidades, has encontrado todas las palabras en {tiempo_total:.2f} segundos.")
 
 def verificar_palabra(sopa, palabra, x, y):
     # Verificar horizontal
+    # En esta función se evalúan dos condiciones para verificar si se encontró la palabra
+    #Primero que las coordenadas que se pongan sean las correctas y que la posición que indica las coordenadas esté alguna
+    #de la palabra
     if y + len(palabra) <= 15 and all(sopa[x][y + i] == palabra[i] for i in range(len(palabra))):
         return True
     # Verificar vertical
+    #Lo mismo para este caso, haciendo los cambios debidos para que tenga sentido en ese diferente vector
     if x + len(palabra) <= 15 and all(sopa[x + i][y] == palabra[i] for i in range(len(palabra))):
         return True
     return False
 
+# Funciones para mostrar información relevante al usuario
 def mostrar_instrucciones():
     print("Instrucciones:")
     print("1. Encuentra todas las palabras en la sopa de letras.")
@@ -159,12 +202,12 @@ def mostrar_definiciones():
     print(" - Algoritmo: Conjunto de pasos ordenados para realizar una tarea.")
     print(" - Condicional: Estructura de control que ejecuta cierto bloque de código si se cumple una condición.")
     print(" - Arreglo: Colección de elementos del mismo tipo, accesibles mediante un índice.")
-    # ... Agrega más definiciones según tus necesidades.
 
 def main():
     print("¡Bienvenido al juego de Sopa de Letras!")
     mostrar_instrucciones()
 
+    #Ciclo para comprobar que el jugador responda lo que se le pide
     while True:
         print("\nSelecciona el nivel:")
         print("1. Noob")
@@ -181,7 +224,9 @@ def main():
         if seleccion_nivel not in ["1", "2", "3"]:
             print("Selección no válida. Inténtalo de nuevo.")
             continue
-
+        
+        #Se crea un diccionario para que se pueda responder a través de los enteros 1, 2 o 3 que nivel quiere escoger.
+        #Cada su keys con su values que sería, noob, decente y good respectivamente
         nivel = {"1": "noob", "2": "decente", "3": "good"}[seleccion_nivel]
         sopa = generar_sopa(nivel)
 
@@ -190,10 +235,12 @@ def main():
         input("Presiona Enter para comenzar...")
 
         jugar_sopa(sopa)
-
+#Función main
 if __name__ == "__main__":
     main()
 ```
+
+---
 
 #### Análisis del código
 
@@ -212,4 +259,76 @@ import time
 
 ---
 
+```python
+#Creamos una función que recibe la respuesta del usuario para elegir la dificultad en la que quiere jugar.
+def generar_sopa(dificultad):
+    if dificultad == "noob": #Dificultad en la que juega el profe Felipe
+        palabras = ["algoritmo", "instrucciones", "pseudocodigo", "variables", "entero", "lenguaje", "flotante",
+                    "constante", "booleano", "strings", "operadores", "listas"]
+    elif dificultad == "decente": #Dificultad en la que juega la mayoría de ingenieros
+        palabras = ["condicional", "input", "indentacion", "if", "elif", "else", "funcion", "libreria", "alcance",
+                    "import", "while", "break", "continue", "for", "rango"]
+    elif dificultad == "good": #Dificultad en la que juegan los ingenieros industriales e ingenieros agricolas
+        palabras = ["arreglo", "mutabilidad", "indice", "concatenar", "pertenencia", "slicing", "len", "append",
+                    "pop", "insert", "remove", "count", "sort", "matriz", "split", "replace", "format", "tupla",
+                    "diccionario", "find", "identidad"]
+
+    # Se crea la variable sopa, en la cual aparece el método .choice de la librería random, que toma como argumentos
+    # a las letras minúsculas del código ASCII a través del método .ascii_lowercase de la librería string
+    # Esto a través de cada elemento de cada arreglo
+    sopa = [[random.choice(string.ascii_lowercase) for _ in range(15)] for _ in range(15)]
+
+    # Se crea ciclo for para que en la matriz se genere la palabra y las letras al azar. Esto a través de la función
+    # colocar_palabra, ya se ve más adelante.
+    for palabra in palabras:
+        colocar_palabra(sopa, palabra)
+
+    # Imprimir las posiciones de las palabras
+    for palabra in palabras:
+        for fila in range(15):
+            for columna in range(15):
+                if verificar_palabra(sopa, palabra, fila, columna): # Se utiliza la función verificar_palabra
+                    print(f'Palabra "{palabra}" empieza en la fila {fila}, columna {columna}')
+
+    # Nos retorna la variable sopa
+    return sopa
 ```
+
+* Creamos una función que recibe la respuesta del usuario para elegir la dificultad en la que quiere jugar.
+* Se crea la variable sopa, en la cual aparece el método .choice de la librería random, que toma como argumentos a las letras minúsculas del código ASCII a través del método .ascii_lowercase de la librería string. Esto a través de cada elemento de cada arreglo
+* Se crea ciclo for para que en la matriz se genere la palabra y las letras al azar. Esto a través de la función colocar_palabra, ya se ve más adelante.
+
+---
+
+```python
+# Creamos la función colocar_palabra que toma los datos de la variable sopa y la variable palabra
+def colocar_palabra(sopa, palabra):
+    #Creamos la variable dirección para definir la dirección en la que irá la palabra. Para ello a través del método random.choice
+    # hacemos que se escoja entre la dirección horizontal y vertical
+    direccion = random.choice(["horizontal", "vertical"])
+    if direccion == "horizontal": #Palabra horizontalmente
+        # Para ello se pide que escoja aleatoriamente la posición de la fila en la cual iniciará la palabra, a través del índice de
+        # los elementos
+        fila = random.randint(0, 14)
+        # Al momento de escoger en que columna iniciará la palabra, se tiene en cuenta que hay un límite para escoger la palabra
+        # para ello se le resta al índice la cantidad de letras que tiene la palabra, ya que si no se hace esto se pasará de la cantidad
+        # de elementos de cada arreglo y no se podrá trabajar con la sopa de letras
+        columna = random.randint(0, 15 - len(palabra))
+        for i in range(len(palabra)):
+            #Hacemos indexación y el resultado de la indexación va a ser un elemento de la variable palabra que pasó por el ciclo palabras
+            # y quedará en la posición[i]
+            sopa[fila][columna + i] = palabra[i]
+    else: # Palabra verticalmente
+        #Se hace lo mismo que en el anterior caso, pero lo que se le hace a las filas pasa a las columnas, y lo que se le hace a las
+        #columnas ahora se le hace a las filas. Esto para poner el límite entre el número de filas que hay y que las palabras estén
+        #ubicadas completamente en la sopa de letras.
+        fila = random.randint(0, 14 - len(palabra))
+        columna = random.randint(0, 14)
+        for i in range(len(palabra)):
+            sopa[fila + i][columna] = palabra[i]
+```
+
+* Creamos la función colocar_palabra que toma los datos de la variable sopa y la variable palabra.
+* Creamos la variable dirección para definir la dirección en la que irá la palabra. Para ello a través del método random.choice hacemos que se escoja entre la dirección horizontal y vertical.
+* Cuando la palabra se ordenará de manera horizontal en el matriz, se pide que escoja aleatoriamente la posición de la fila en la cual iniciará la palabra, a través del índice de los elementos.
+* Al momento de escoger en que columna iniciará la palabra, se tiene en cuenta que hay un límite para escoger la palabra para ello se le resta al índice la cantidad de letras que tiene la palabra, ya que si no se hace esto se pasará de la cantidad de elementos de cada arreglo y no se podrá trabajar con la sopa de letras.
