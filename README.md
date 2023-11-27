@@ -332,3 +332,154 @@ def colocar_palabra(sopa, palabra):
 * Creamos la variable dirección para definir la dirección en la que irá la palabra. Para ello a través del método random.choice hacemos que se escoja entre la dirección horizontal y vertical.
 * Cuando la palabra se ordenará de manera horizontal en el matriz, se pide que escoja aleatoriamente la posición de la fila en la cual iniciará la palabra, a través del índice de los elementos.
 * Al momento de escoger en que columna iniciará la palabra, se tiene en cuenta que hay un límite para escoger la palabra para ello se le resta al índice la cantidad de letras que tiene la palabra, ya que si no se hace esto se pasará de la cantidad de elementos de cada arreglo y no se podrá trabajar con la sopa de letras.
+* Si la palabra estará verticalmente entonces se escogerá en este caso en que fila estará, se hace lo mismo que en el anterior caso, pero lo que se le hace a las filas pasa a las columnas, y lo que se le hace a las columnas ahora se le hace a las filas. Esto para poner el límite entre el número de filas que hay y que las palabras estén ubicadas completamente en la sopa de letras.
+
+---
+
+```python
+#Tenemos la función mostrar_sopa
+def mostrar_sopa(sopa):
+    for fila in sopa:
+        #Usamos el método .join, que une todos los elementos de una matriz y los devuelve en una cadena, pero para este caso será para
+        #las filas
+        print(" ".join(fila))
+    print()
+```
+
+* Usamos el método .join, que une todos los elementos de una matriz y los devuelve en una cadena, pero para este caso será para las filas.
+
+---
+
+```python
+#Contamos con la función jugar_sopa
+def jugar_sopa(sopa):
+    #las palabras ha encontrar serán almacenadas en un elemento set(), el cual no puede tener elementos duplicados
+    palabras_encontradas = set()
+    #Para calcular el tiempo que se demora el jugador completar la sopa de letras.
+    inicio_tiempo = time.time()
+
+    #Creamos un ciclo en el cual pediremos que pida una coordenada de la fila y columna donde está la palabra
+    #encontrada, de igual manera se pide que ingrese la palabra encontrada, esta con la variable palabra
+    while True:
+        mostrar_sopa(sopa)
+        x = int(input("Ingrese la fila (0-14): "))
+        y = int(input("Ingrese la columna (0-14): "))
+
+        palabra = input("Ingrese la palabra encontrada: ")
+
+        #Si palabra encontrada esta en la variable de palabras_encontradas entonces es porque ya se había
+        #encontrado
+        if palabra in palabras_encontradas:
+            print("¡Ya encontraste esa palabra!")
+            # con continue podemos continuar con el ciclo
+            continue
+        
+        #Usamos la función verificar_palabra
+        if verificar_palabra(sopa, palabra, x, y):
+            #Si con la función se verifica que se encontró la palabra entonces da el siguiente mensaje
+            print("¡Correcto! Palabra encontrada.")
+            #A la palabra se le añade a la variable palabras_encontradas, para que el primer caso tenga sentido.
+            palabras_encontradas.add(palabra)
+        else: # Si no es correcta la palabra encontrada entonces da el siguiente mensaje
+            print("Incorrecto. Inténtalo de nuevo.")
+
+        #Este último caso para saber si ya se encontraron todas las palabras de la sopa de letras
+        # Si la cantidad de palabras en la variable es igual a la cantidad de palabras encontradas entonces se rompe el ciclo
+        if len(palabras_encontradas) == len(set(palabra for palabra in palabra)):
+            break
+    
+    #El tiempo total lo evaluamos
+    tiempo_total = time.time() - inicio_tiempo
+    print(f"Felicidades, has encontrado todas las palabras en {tiempo_total:.2f} segundos.")
+```
+
+* Las palabras ha encontrar serán almacenadas en un elemento set(), el cual no puede tener elementos duplicados. Esto es importante, se verá más adelante en el código.
+* El time.time es para calcular el tiempo que se demora el jugador completar la sopa de letras.
+* Creamos un ciclo en el cual se pedirá una coordenada de la fila y columna donde está la palabra encontrada, de igual manera se pide que ingrese la palabra encontrada, esta con la variable palabra.
+* Y en ese ciclo tendremos varios casos posibles
+* * Si palabra encontrada esta en la variable de palabras_encontradas entonces es porque ya se había encontrado.
+  * Usamos la función verificar_palabra (más adelante aparece), si con la función se verifica que se encontró la palabra entonces imprime un mensaje, a la palabra se le añade a la variable palabras_encontradas, para que el primer caso tenga sentido. Si no es correcta la palabra encontrada entonces da el siguiente mensaje
+  * Este último caso para saber si ya se encontraron todas las palabras de la sopa de letras, si la cantidad de palabras en la variable es igual a la cantidad de palabras encontradas entonces se rompe el ciclo.
+* El tiempo total lo evaluamos
+
+---
+
+```python
+def verificar_palabra(sopa, palabra, x, y):
+    # Verificar horizontal
+    # En esta función se evalúan dos condiciones para verificar si se encontró la palabra
+    #Primero que las coordenadas que se pongan sean las correctas y que la posición que indica las coordenadas esté alguna
+    #de la palabra
+    if y + len(palabra) <= 15 and all(sopa[x][y + i] == palabra[i] for i in range(len(palabra))):
+        return True
+    # Verificar vertical
+    #Lo mismo para este caso, haciendo los cambios debidos para que tenga sentido en ese diferente vector
+    if x + len(palabra) <= 15 and all(sopa[x + i][y] == palabra[i] for i in range(len(palabra))):
+        return True
+    return False
+```
+
+* Tenemos dos casos, cuando se verifica horizontalmente y cuando es verticalmente.
+* * Horizontalmente: En esta función se evalúan dos condiciones para verificar si se encontró la palabra, primero que las coordenadas que se pongan sean las correctas y que la posición que indica las coordenadas esté alguna de la palabra.
+  * Verticalmente: Lo mismo para este caso, haciendo los cambios debidos para que tenga sentido en ese diferente vector
+
+---
+
+```python
+# Funciones para mostrar información relevante al usuario
+def mostrar_instrucciones():
+    print("Instrucciones:")
+    print("1. Encuentra todas las palabras en la sopa de letras.")
+    print("2. Ingresa las coordenadas (fila y columna) y la palabra encontrada.")
+    print("3. Puedes ingresar 'salir' en cualquier momento para terminar el juego.")
+
+def mostrar_definiciones():
+    print("Definiciones:")
+    print(" - Algoritmo: Conjunto de pasos ordenados para realizar una tarea.")
+    print(" - Condicional: Estructura de control que ejecuta cierto bloque de código si se cumple una condición.")
+    print(" - Arreglo: Colección de elementos del mismo tipo, accesibles mediante un índice.")
+
+def main():
+    print("¡Bienvenido al juego de Sopa de Letras!")
+    mostrar_instrucciones()
+
+    #Ciclo para comprobar que el jugador responda lo que se le pide
+    while True:
+        print("\nSelecciona el nivel:")
+        print("1. Noob")
+        print("2. Decente")
+        print("3. Good")
+        print("4. Salir")
+
+        seleccion_nivel = input("Ingresa el número de nivel o 'salir': ")
+
+        if seleccion_nivel == "salir":
+            print("Gracias por jugar. ¡Hasta luego!")
+            break
+
+        if seleccion_nivel not in ["1", "2", "3"]:
+            print("Selección no válida. Inténtalo de nuevo.")
+            continue
+        
+        #Se crea un diccionario para que se pueda responder a través de los enteros 1, 2 o 3 que nivel quiere escoger.
+        #Cada su keys con su values que sería, noob, decente y good respectivamente
+        nivel = {"1": "noob", "2": "decente", "3": "good"}[seleccion_nivel]
+        sopa = generar_sopa(nivel)
+
+        print(f"\n¡Nivel {nivel.capitalize()} seleccionado!")
+        mostrar_definiciones()
+        input("Presiona Enter para comenzar...")
+
+        jugar_sopa(sopa)
+#Función main
+if __name__ == "__main__":
+    main()
+```
+
+* Funciones para mostrar información relevante al usuario
+* Se crea un diccionario para que se pueda responder a través de los enteros 1, 2 o 3 que nivel quiere escoger. Cada keys con su values que sería, noob, decente y good respectivamente. De igual manera el cuatro sería key de "salir". Por ende se puede usar el 4.
+* Función main.
+
+---
+
+### Diagrama General del uso de la sopa de letras.
