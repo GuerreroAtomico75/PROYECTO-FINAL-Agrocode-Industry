@@ -48,7 +48,10 @@ Los puntos que tuvimos en cuenta para resolver el problema antes de editar códi
 * Será necesario que al momento que el usuario encuentre una palabra pueda seleccionarla, teniendo en cuenta las filas y las columnas de la sopa de letras.
 * Si cada vez que se escoge una letra a través de las coordenadas, es una letra que conforma una de las palbras que se va a encontrar; entonces se le pedirá al usuario que ingrese la palabra que encontró. Si los dos pasos anteriores son correctos entonces se habrá encontrado una palabra; sino entonces se avisará que no es una palabra que es parte de las que hay que encontrar y se vuelve a tener la oportunidad de seguir escogiendo palabras.
 
-#### Datalles a tener en cuenta al momento crear 
+#### Datalles a tener en cuenta al momento crear el código
+* **Tema**: El tema de la sopa de letras será de conceptos que se vieron en el curso.
+* **Tiempo**: No tendremos un tiempo límite para encontrar todas las palabras de la sopa de letras, pero al final de la sopa de letras al encontrar todas las palabras se brindará el tiempo que se tardó el usuario en encontrar todas las palabras.
+* **Tamaño**: La matriz será de 15x15 palabras.
 
 **Código**
 ```python
