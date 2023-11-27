@@ -483,11 +483,62 @@ def mostrar_instrucciones():
     print("2. Ingresa las coordenadas (fila y columna) y la palabra encontrada.")
     print("3. Puedes ingresar 'salir' en cualquier momento para terminar el juego.")
 
-def mostrar_definiciones():
-    print("Definiciones:")
-    print(" - Algoritmo: Conjunto de pasos ordenados para realizar una tarea.")
-    print(" - Condicional: Estructura de control que ejecuta cierto bloque de código si se cumple una condición.")
-    print(" - Arreglo: Colección de elementos del mismo tipo, accesibles mediante un índice.")
+def mostrar_definiciones(dificultad):
+    if dificultad=="noob":
+        print("Definiciones:")
+        print(" - Algoritmo: Conjunto de pasos ordenados para realizar una tarea.")
+        print(" - Instrucciones: Las acciones o procesos que un algoritmo realiza sobre los datos.")
+        print(" - Pseudocódigo: Es un lenguaje de programación informal que utiliza un conjunto de instrucciones sencillas para describir el flujo de un algoritmo. Ese no tiene una sintaxis estricta y no se compila o ejecuta en una computadora.")
+        print(" - Variables: Es un espacio de memoria donde se almacena un dato.")
+        print(" - Entero: Tipo de dato que permite representar números enteros. En Pyhton se representa por medio de las expresión 'int'.")
+        print(" - Lenguaje: Está formado por el léxico, la sintaxis y la semántica, los cuales permiten expresar y comunicar información entre personas, computadores, etc.")
+        print(" - Flotante: Tipo de dato que permite representar números reales. En Python se representa por medio de la expresión 'float'.")
+        print(" - Constante: Tipo de dato que representa los valores persistentes. En Python no existe una expresión específica para declarar una constante, sin embargo, se suele declarar una variable constante en snake case mayúsculas.")
+        print(" - Booleano: Tipo de dato que representa dos valores; True o False. En Python se representa por medio de la expresión 'bool'.")
+        print(" - Strings: Es una secuencia de cero o más caracteres. Está delimitada por el carácter ' o por el carácter “. Es una estructura de datos inmutable. ")
+        print(" - Operadores: Es la manera de establecer relaciones entre los tipos de variables.")
+        print(" - Listas: Un tipo de dato en Python que permite almacenar una colección de objetos a los que se puede acceder a través de un índice.")
+   
+    if dificultad=="decente":
+        print(" - Condicional: Estructura de control que ejecuta cierto bloque de código si se cumple una condición.")
+        print(" - Input: Función que permite ingresar datos a un programa. ")
+        print(" - Indentación: Aquellos espacios en blanco que están en el lado izquierdo de cada línea de código. Se usa para definir bloques de código; las líneas que están indentadas al mismo nivel perteneces al mismo bloque de código.")
+        print(" - If: Se utiliza para ejecutar un grupo de instrucciones si una condición se cumple.")
+        print(" - Elif: Permite enlazar varias estructuras condicionales, de tal manera que solamente se pueda ejecutar un grupo de instrucciones dependiendo de cual de las opciones se evalúa verdadero.")
+        print(" - Else: Se utiliza para ejecutar un grupo de instrucciones si ninguna de las condiciones anteriores se evalúa verdadero.")
+        print(" - Funciíon: Es un bloque de líneas de código que lleva a cabo una tarea específica y se puede reutilizar las veces que uno desee")
+        print(" - Librería: Contiene funciones, que es pueden importar para ser utilizadas en los programas.")
+        print(" - Alcance: Permite determinar en que partes del código se puede acceder a una variable. Hay dos tipos de alcance:  global y local. Las variables globales permiten modificar una variable en cualquier parte del código, las variables locales permiten modificar una variable únicamente en la función donde es declarada.")
+        print(" - Import: Es la palabra reservada para importar paquetes (librerías) en Python")
+        print(" - While: Permite ejecutar un bloque de instrucciones mientras una expresión booleana dada se cumpla. El bloque de instrucciones se deja de ejecutar cuando la condición no se cumple.")
+        print(" - Break: Palabra reservada que termina la ejecución del ciclo sin evaluar más condiciones.")
+        print(" - Continue: Palabra reservada que permite terminar la ejecución de la iteración actual, pasando a la siguiente evaluación del ciclo.")
+        print(" - For: Utilizado para obtener uno a uno los elementos de una colección de elementos y poder realizar con cada uno de ellos el mismo bloque de operaciones.")
+        print(" - Rango: Colección de números en un intervalo semiabierto. ")
+
+    if dificultad=="good":
+        print(" - Arreglo: Es una colección de n elementos del mismo tipo.")
+        print(" - Mutabilidad: Característica de aquellos elementos que pueden ser modificados luego de haberse definido.")
+        print(" - Índice: Es la posición en la cual se almacena la variable.")
+        print(" - Concatenar: Operacion que une horizontalmente listas. Esta se lleva a cabo con el operador de suma (+).")
+        print(" - Pertenencia: Se usa la palabra reservada 'in' para validar si un elemento hace parte de una colección.")
+        print(" - Slicing: Es una operación que permite especificar los elementos de una lista a los que se quiere acceder, donde uno indica el inicio, el fin y el paso. ")
+        print(" - Len: Método que retorna la cantidad de elementos de una lista.")
+        print(" - Append: Método que permite agregar elementos al final de una lista.")
+        print(" - Pop: Método que elimina el elemento de un determinado índice.")
+        print(" - Insert: Método que permite agregar elementos en una posición específica de una lista.")
+        print(" - Remove: Método que permite eliminar la primera aparición de un elemento de una lista.")
+        print(" - Count: Método que obtiene las veces que un elemento se encuentra en una lista.")
+        print(" - Sort: Método que permite ordenar una lista.")
+        print(" - Matriz: Un arreglo rectangular de elementos del mismo tipo. Una colección de n x m arreglos.")
+        print(" - Split: Método que divide una cadena de acuerdo con una subcadena que sirve como delimitador, dejando las partes separadas en una lista.")
+        print(" - Replace: Método que reemplaza una subcadena en una cadena por otra subcadena.")
+        print(" - Format: Método para imprimir cadenas de caracteres.")
+        print(" - Tupla: Secuencia de elementos que puede almacenar datos heterogéneos (enteros, reales, cadenas, listas, diccionarios). Se escribe como una secuencia de datos, separados por una coma y delimitados por paréntesis redondos.")
+        print(" - Diccionario: Colección de parejas clave-valor donde los valores pueden ser recuperados principalmente por su clave.")
+        print(" - Find: Método para obtener la primera ocurrencia de una subcadena  en una cadena.")
+
+
 
 def main():
     print("¡Bienvenido al juego de Sopa de Letras!")
@@ -517,7 +568,7 @@ def main():
         sopa = generar_sopa(nivel)
 
         print(f"\n¡Nivel {nivel.capitalize()} seleccionado!")
-        mostrar_definiciones()
+        mostrar_definiciones(nivel)
         input("Presiona Enter para comenzar...")
 
         jugar_sopa(sopa)
@@ -535,41 +586,29 @@ if __name__ == "__main__":
 ### Diagrama General del uso de la sopa de letras.
 
 ```mermaid
-graph TD
 
-subgraph Inicio
-    inicio(Inicio)
-    inicio --> Nivel[Elegir Nivel]
-end
+flowchart TD
+A(Inicio)-->B[Mensaje bienvenida]
+B-->C[Instrucciones del juego]
+C-->D{Selección de nivel}
+D-->E[Noob]
+D-->F[Decente]
+D-->G[Good]
+D--->I[Selección no válida]
+D-->Y[Salir]-->R
+I-->D
+E-->J[mostrar definiciones]
+F-->J
+G-->J
+J-->K[Generar sopa de letras]
+K-->L[Ingresar fila]
+L-->M[Ingresar columna]
+M-->N[Ingresar la palabra encontrada]
+N-->O[Correcto/Incorrecto]
+O-->P{Ya se encontraron todas las palabras?}
+P--sí -->Q[Mostrar tiempo total]-->R(fin)
+P--no -->L
 
-subgraph "Generar Sopa"
-    Nivel --> Seleccion{Nivel seleccionado}
-    Seleccion -- noob --> noob[Generar palabras para nivel noob]
-    Seleccion -- decente --> decente[Generar palabras para nivel decente]
-    Seleccion -- good --> good[Generar palabras para nivel good]
-    noob --> Generar[Generar Sopa de Letras]
-    decente --> Generar
-    good --> Generar
-    Generar --> Encontrar[Encontrar palabras]
-end
-
-subgraph "Jugar Sopa"
-    Encontrar --> Terminar{¿Todas las palabras encontradas?}
-    Terminar -- No --> Mostrar[Mostrar Sopa]
-    Mostrar --> coordenadas[Ingresar coordenadas y palabra]
-    coordenadas --> encontrada{¿Palabra encontrada?}
-    encontrada -- No --> notcoincide[La palabra ingresada no coincide]
-    notcoincide ---> Terminar
-    encontrada -- No --> busca[Palabra ya encontrada]
-    busca --> Terminar
-    encontrada -- si --> guardar[Palabra guardada]
-    guardar ---> Terminar
-    Terminar -- Si --> N[Mostrar tiempo total]
-end
-
-subgraph Fin
-    N --> O(Fin)
-end
 ```
 
 El diagrama es una descripción del recorrido que hace realmente el programa a nivel general. Mirando el código nos damos cuenta que el uso de varias funciones están adentro de otras funciones y eso se comprueba en el diagrama a nivel general que se muestra anteriormente.
